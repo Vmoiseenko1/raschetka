@@ -1,0 +1,26 @@
+def tsplot(y, lags=None, figsize=(15,7), style='bmh'):
+    """ACF и PACF"""
+    if not isinstance(y, pd.Series): #Ставим формат Series для ряда
+        y = pd.Series(y)
+
+    with plt.style.context(style):
+
+        fig = plt.figure(figsize=figsize)
+
+        layout = (2, 2)
+        ts_ax = plt.subplot2grid(layout, (0, 0), colspan=2)
+        acf_ax = plt.subplot2grid(layout, (1, 0))
+        pacf_ax = plt.subplot2grid(layout, (1, 1))
+
+        y.plot(ax = ts_ax, color = 'black')
+        ts_ax.set_title('Time Series Analysis Plots')
+
+        sm.graphics.tsa.plot_acf(y, lags=lags, ax=acf_ax, alpha=0.5, color = 'red')
+        sm.graphics.tsa.plot_pacf(y, lags=lags, ax=pacf_ax, alpha=0.5, method='ywm', color = 'red')
+
+        plt.tight_layout()
+        plt.show()
+    return
+
+np.random.seed(1)
+tsplot(df['Value'], lags=30)
